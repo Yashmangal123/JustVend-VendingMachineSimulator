@@ -1,329 +1,200 @@
-# VendingMachineSimulator
+# JustVend — Advanced Vending Machine Simulator
 
-Team Information
-Team Name: JustVend
+A Python-based, terminal vending machine simulator that models the core flow of a real vending machine: account access, browsing products, managing a shopping cart, checkout, payments, receipts, and inventory administration.
 
-Project Title: Advanced Vending Machine Simulator
+Built by **Team JustVend** as a modular project using Python’s standard library and JSON-based storage, with `readchar` for keyboard-driven menu navigation.
 
-Team Members:
+## Contents
 
-Yash Mangal - BC2025118
-Shubham Kuvad - BC2025052
-Harsh Lotiya - BC2025038
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Using JustVend](#using-justvend)
+- [Data Storage](#data-storage)
+- [Implementation Highlights](#implementation-highlights)
+- [Team](#team)
+- [Future Improvements](#future-improvements)
 
-Project Description
-A sophisticated vending machine simulator built in Python that replicates real-world vending machine operations with advanced features including user authentication, inventory management, category-based shopping, digital receipts, and administrative controls. The system maintains persistent data storage using JSON files and provides an intuitive interactive interface.
+## Features
 
+### Customer experience
+- **Sign up and log in** to access shopping features.
+- **Masked password entry** displays asterisks while typing.
+- **Browse by category** to find products more easily.
+- **View product availability**, price, and stock quantity.
+- **Manage a shopping cart** by adding items, changing quantities, removing items, and reviewing the total.
+- **Checkout and payment validation**, including change calculation when the amount paid exceeds the total.
+- **Digital receipts** generated for completed transactions.
+- **Account management**, including account deletion and logout.
 
-Concepts and Libraries Used
-Programming Concepts
-File Handling & Data Persistence - JSON-based data storage
-Exception Handling - Robust error management
-Data Structures - Dictionaries, Lists, Nested data
-User Input Validation - Comprehensive input checking
-Modular Programming - Organized function-based structure
-Session Management - User state maintenance
-Interactive UI - Menu-driven interface
+### Owner / admin controls
+- **Inventory management:** add products in bulk and modify item details such as price, quantity, and category.
+- **Stock monitoring** to help prevent purchases beyond available inventory.
+- **Sales reports and revenue tracking.**
+- **Order history** for reviewing transactions.
+- **User management** through the administrative interface.
 
+### Reliability and usability
+- **Persistent JSON storage** for product, user, and transaction data.
+- **Input validation and error handling** for common invalid operations.
+- **Keyboard-driven menus** with interactive selection.
+- **Automatic saving** of data changes.
+- **Temporary-file-based saving** to help reduce the risk of corrupting data during writes.
 
-Python Libraries
-json - Data serialization and persistent storage
-os - File system operations and screen management
-datetime - Timestamp generation for orders
-time - Delay operations for user experience
-readchar - Interactive keyboard input handling
+## Tech Stack
 
+| Technology | Purpose |
+|---|---|
+| Python | Application logic and core functionality |
+| `json` | Reading and writing persistent data |
+| `os` | File-system operations |
+| `datetime` | Order timestamps |
+| `time` | Short delays for interface feedback |
+| `readchar` | Character-by-character keyboard input and interactive navigation |
 
-Project Structure
-text
+The project uses dictionaries, lists, modular functions, exception handling, input validation, and session state management.
+
+## Project Structure
+
+The project can be organised as follows:
+
+```text
 JustVend/
 ├── src/
 │   └── vending_machine.py
 ├── data/
 │   ├── vending_data.json
 │   └── users.json
-├── docs/
-│   └── README.md
-└── receipts/
-    └── (automatically generated receipt files)
+├── receipts/
+│   └── receipt_*.txt
+└── README.md
+```
 
+**Note:** The exact locations of generated JSON and receipt files depend on the paths configured in the code. Keep the paths consistent with your implementation.
 
-Main Modules and Functions
-1. Core Application Setup
-python
-DATA_FILE = "vending_data.json"
-USERS_FILE = "users.json"
-ADMIN_PASSWORD = "JustVend"
+## Getting Started
 
-vending_db = {
-    "items": {},
-    "orders": [],
-    "revenue": 0,
-    "order_count": 0,
-    "categories": []
-}
+### Prerequisites
 
+- Python 3.6 or later
+- `pip` (or another way to install Python packages)
+- A terminal that supports interactive keyboard input
 
-2. User Authentication System
+### 1. Get the project
 
-Key Functions:
-user_signup() - Creates new user accounts with validation
-user_login() - Authenticates users with secure password checking
-masked_input() - Securely captures passwords with asterisk display
-delete_account() - User account management
+Clone your repository, or download and extract the project files.
 
-Example Workflow:
-
-=== VENDING MACHINE ===
-> Login
-  Signup
-  Owner Panel
-  Exit
-
-Username: harsh_lotiya
-Password: ********
-Login successful!
-
-3. Inventory Management System
-Functions:
-display_items() - Shows all available items with details
-admin_add_items() - Bulk item addition with category management
-modify_item() - Dynamic item editing (price, quantity, category)
-show_item_details() - Comprehensive item information display
-
-Data Structure:
-
-json
-{
-  "Lays Chips": {
-    "price": 20,
-    "qty": 25,
-    "cat": "Snacks"
-  },
-  "Coca Cola": {
-    "price": 30,
-    "qty": 15,
-    "cat": "Beverages"
-  }
-}
-
-4. Advanced Shopping System
-Core Functions:
-user_shopping() - Main shopping interface controller
-select_category() - Category-based navigation
-select_item() - Item selection with real-time stock display
-select_quantity() - Intelligent quantity validation
-
-Interactive Menu Example:
-
---- SELECT CATEGORY ---
-> Beverages
-  Snacks
-  Chocolates
-  Back
-
---- SELECT ITEM (Beverages) ---
-> Coca Cola (qty:15) - ₹30
-  Pepsi (qty:12) - ₹25
-  Mineral Water (qty:20) - ₹20
-  Back
-
-5. Shopping Cart Management
-Features:
-display_cart() - Real-time cart visualization
-Dynamic quantity modification
-Item removal capability
-Running total calculation
-
-Cart Display:
-
---- CART ---
-Coca Cola x2 = ₹60
-Lays Chips x1 = ₹20
-KitKat x3 = ₹75
-----------------
-TOTAL: ₹155
-
-6. Checkout & Payment System
-Functions:
-process_checkout() - Complete transaction processing
-create_receipt() - Digital receipt generation
-Stock updating
-Order history recording
-
-Payment Process:
-
---- CHECKOUT ---
-Items in your order:
-==================================================
-• Coca Cola
-  Quantity: 2
-  Price: ₹30 each
-  Subtotal: ₹60
---------------------------------------------------
-• Lays Chips
-  Quantity: 1
-  Price: ₹20 each
-  Subtotal: ₹20
---------------------------------------------------
-
-TOTAL ITEMS: 3
-TOTAL AMOUNT: ₹80
-==================================================
-
-Proceed to payment? (y/n): y
-
-Enter payment amount (Total ₹80): 100
-Payment successful! Change: ₹20
-
-7. Administrative Control Panel
-Admin Features:
-Inventory management
-Sales analytics and reporting
-Order history tracking
-Revenue monitoring
-User management
-
-Access:
-
-Owner/Admin Password: ********
-
---- OWNER / ADMIN PANEL ---
-> Manage Items
-  Sales Report
-  Back
-
-****************************************
-Setup Instructions
-Prerequisites
-Python 3.6 or higher
-readchar library
-
-Installation Steps
-Install Required Library:
-
-bash
-pip install readchar
-Project Setup:
-
-bash
-# Create project directory
-mkdir JustVend
+```bash
+git clone <your-repository-url>
 cd JustVend
+```
 
-# Place the vending_machine.py file in the directory
-# Run the application
-python vending_machine.py
-Automatic File Generation
-The application automatically creates:
+Replace `<your-repository-url>` with your actual Git repository URL.
 
-vending_data.json - Items, orders, revenue data
+### 2. Install the dependency
 
-users.json - User account information
+```bash
+python3 -m pip install readchar
+```
 
-receipt_*.txt - Transaction receipts
+If `pip` is unavailable, install or configure it for your Python environment before running the application.
 
-Complete Usage Guide
-For Customers:
-Account Creation & Login
+### 3. Run the application
 
-→ Select "Signup" from main menu
-→ Enter username and password
-→ Account created successfully
-→ Login with credentials
-Shopping Process
+If the main file is at `src/vending_machine.py`, run:
 
-→ Select "Buy Items"
-→ Browse categories (Beverages, Snacks, etc.)
-→ Select items and quantities
-→ Manage cart (add/remove/modify)
-→ Proceed to checkout
-→ Make payment
-→ Receive digital receipt
-Account Management
+```bash
+python3 src/vending_machine.py
+```
 
-→ Delete account if needed
-→ Secure logout
-For Administrators:
-Access Admin Panel
+If your file is in the project root instead, run:
 
-→ Select "Owner Panel" from main menu
-→ Enter password: "JustVend"
-→ Access administrative features
-Inventory Management
+```bash
+python3 vending_machine.py
+```
 
-→ Add new items in bulk
-→ Modify existing items (price, quantity, category)
-→ View detailed item information
-→ Monitor stock levels
-Sales Analytics
+The application should open its main interactive menu in the terminal.
 
-→ View total revenue
-→ Analyze order history
-→ Track sales performance
-→ Generate sales reports
+## Using JustVend
 
-**********************
-Technical Features
-Data Persistence
-Automatic Saving: All changes saved immediately
-JSON Format: Human-readable data storage
-Backup System: Temporary file writing for data integrity
-*****************************
-Error Handling
-Input Validation: Comprehensive user input checking
-Stock Management: Prevent over-selling items
-Payment Verification: Ensure sufficient payment amounts
-File Operation Safety: Handle file read/write errors
-*******************************
-User Experience
-Interactive Menus: Keyboard-driven navigation
-Real-time Updates: Immediate cart and stock updates
-Visual Feedback: Color-coded interface elements
-Session Management: Maintain user state throughout usage
+### Customer workflow
 
-************************************
-Example Scenarios
-Scenario 1: Complete Customer Journey
-text
-1. Main Menu → Signup → Create account (yash_mangal)
-2. Login → Access system
-3. Buy Items → Select "Beverages" category
-4. Add "Coca Cola" x2 to cart
-5. Add "Mineral Water" x1 to cart
-6. View Cart → Verify items
-7. Checkout → Pay ₹80
-8. Receive receipt_receipt_001.txt
-Scenario 2: Administrative Operations
-text
-1. Owner Panel → Enter "JustVend" password
-2. Manage Items → Add Items
-3. Add new product: "Orange Juice", ₹35, Qty: 10, Category: "Beverages"
-4. Edit existing item: Update "Lays Chips" price to ₹25
-5. View Sales Report → Check revenue: ₹1250
-Code Structure Highlights
-Main Program Flow
-python
-def main():
-    while True:
-        if current_session["user"] is None:
-            # Show login/signup menu
-        else:
-            # Show user shopping menu
-Data Management
-python
-def load_data(file_path, default_value):
-    return json.load(open(file_path)) if os.path.exists(file_path) else default_value
+1. Start the application.
+2. Choose **Sign up** to create an account, or **Login** if you already have one.
+3. Browse the available product categories.
+4. Select products and specify quantities.
+5. Review and update your cart as needed.
+6. Proceed to checkout and enter the payment amount.
+7. Complete the transaction and review the generated receipt.
+8. Log out when finished.
 
-def save_data(file_path, data):
-    # Safe file writing with temporary files
-Interactive Interface
-python
-def interactive_menu(options, title=""):
-    # Handles keyboard navigation with arrow keys
-    # Provides visual selection feedback
+### Owner / admin workflow
 
-Team Contribution
-Yash Mangal: Core architecture, user authentication, data persistence
-Shubham Kuvad: Shopping system, cart management, UI/UX design
-Harsh Lotiya: Inventory management, admin features, payment system
+1. Select **Owner Panel** from the main menu.
+2. Enter the configured admin password.
+3. Open the inventory-management options to add or modify products.
+4. Review sales reports, revenue, and order history.
+5. Return to the main menu when finished.
+
+**Admin access:** The supplied project notes specify `JustVend` as the default admin password. If this value is still hard-coded in your implementation, change it before sharing or deploying the project. A hard-coded password is suitable only for a local demonstration, not a production system.
+
+## Data Storage
+
+JustVend uses JSON files to preserve application data between runs.
+
+| File | Purpose |
+|---|---|
+| `vending_data.json` | Product inventory, categories, orders, revenue, and order count |
+| `users.json` | User account data |
+| `receipt_*.txt` | Text receipts generated for completed transactions |
+
+The application can initialise data files when they do not exist, depending on the configured loading and saving logic.
+
+**Tip:** Back up the JSON files before manually editing them. Keep the data structure consistent with what the program expects.
+
+## Implementation Highlights
+
+- **Modular design:** separate functions handle authentication, shopping, inventory, checkout, and administration.
+- **Session management:** tracks the currently logged-in user during an application session.
+- **Stock validation:** checks product availability before confirming quantities.
+- **Transaction handling:** updates inventory and records orders after checkout.
+- **Persistent state:** saves changes to JSON so data can be reused in later sessions.
+- **Interactive terminal UI:** uses keyboard input to navigate menu options.
+
+## Example Scenario
+
+A customer logs in, selects two soft drinks priced at ₹30 each and one snack priced at ₹20, then proceeds to checkout.
+
+| Item | Quantity | Unit price | Subtotal |
+|---|---:|---:|---:|
+| Soft drink | 2 | ₹30 | ₹60 |
+| Snack | 1 | ₹20 | ₹20 |
+| **Total** | **3** |  | **₹80** |
+
+If the customer pays ₹100, the application calculates ₹20 in change, assuming the payment is accepted and the transaction completes successfully.
+
+## Team
+
+**Team Name:** JustVend  
+**Project:** Advanced Vending Machine Simulator
+
+| Team member | Register number | Contribution |
+|---|---|---|
+| Yash Mangal | BC2025118 | Core architecture, user authentication, and data persistence |
+| Shubham Kuvad | BC2025052 | Shopping system, cart management, and user interface |
+| Harsh Lotiya | BC2025038 | Inventory management, admin features, and payment system |
+
+## Future Improvements
+
+Possible next steps for the project include:
+
+- Add automated tests for shopping, stock updates, and checkout edge cases.
+- Improve credential security with password hashing and safer configuration.
+- Add inventory low-stock alerts and exportable sales reports.
+- Introduce clearer error messages and recovery for malformed JSON data.
+- Add a configurable settings file for paths and administrative settings.
+
+---
+
+*JustVend is an educational simulator intended to demonstrate Python programming, file handling, data structures, modular design, and transaction workflows.*
